@@ -145,4 +145,109 @@
     50% { color: #28a745; transform: scale(1.05); }
     100% { color: inherit; transform: scale(1); }
 }
-</style
+</style>
+
+<script>
+// Update cart count and total dynamically
+function updateCartCount() {
+    fetch('{{ route("cart.count") }}')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.getElementById('cart-count');
+            const navCartTotal = document.getElementById('nav-cart-total');
+            
+            if (cartCount) {
+                cartCount.textContent = data.cart_count;
+                // Add animation when count changes
+                cartCount.classList.add('badge-animate');
+                setTimeout(() => cartCount.classList.remove('badge-animate'), 300);
+            }
+            
+            if (navCartTotal) {
+                const currentTotal = navCartTotal.textContent;
+                const newTotal = numberFormat(data.cart_total);
+                
+                if (currentTotal !== newTotal) {
+                    navCartTotal.textContent = newTotal;
+                    // Add animation when total changes
+                    navCartTotal.classList.add('total-animate');
+                    setTimeout(() => navCartTotal.classList.remove('total-animate'), 500);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error updating cart info:', error);
+            // Graceful fallback - don't show errors to user
+        });
+}
+
+// Format number for Indonesian currency
+function numberFormat(num) {
+    return new Intl.NumberFormat('id-ID').format(num);
+}
+
+// Handle add to cart with authentication check
+function handleAddToCart(productId, quantity = 1) {
+    fetch('{{ route("cart.add") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update cart count and total immediately
+            updateCartCount();
+            showNotification(data.message, 'success');
+        } else {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                showNotification(data.message, 'error');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+        showNotification('Terjadi kesalahan', 'error');
+    });
+}
+
+// Show notification
+function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : (type === 'error' ? 'danger' : 'warning')} position-fixed top-0 end-0 m-3`;
+    toast.style.zIndex = '9999';
+    toast.style.minWidth = '300px';
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="bi ${type === 'success' ? 'bi-check-circle' : (type === 'error' ? 'bi-exclamation-circle' : 'bi-info-circle')} me-2"></i>
+            ${message}
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Update cart count when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Don't update on initial load since it's shared from backend
+    
+    // Listen for storage events to sync across tabs
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'cartUpdated') {
+            updateCartCount();
+        }
+    });
+});
+</script>
