@@ -1,0 +1,17 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#f8f9fa"/>
+  
+  <!-- Folder Icon -->
+  <path d="M 50 80 L 50 200 L 250 200 L 250 80 Z" fill="#ffd700" stroke="#ffaa00" stroke-width="2"/>
+  
+  <!-- Folder Tab -->
+  <path d="M 50 80 L 100 80 L 100 60 L 200 60 L 200 80 L 250 80" fill="#ffed4e" stroke="#ffd700" stroke-width="2"/>
+  
+  <!-- Label Lines -->
+  <rect x="80" y="130" width="140" height="2" fill="#6c757d" rx="1"/>
+  <rect x="80" y="145" width="100" height="2" fill="#6c757d" rx="1"/>
+  <rect x="80" y="160" width="120" height="2" fill="#6c757d" rx="1"/>
+  
+  <!-- Shadow Effect -->
+  <ellipse cx="150" cy="220" rx="40" ry="3" fill="#dee2e6" opacity="0.2"/>
+</svg>

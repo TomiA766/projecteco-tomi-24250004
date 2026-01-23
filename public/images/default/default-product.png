@@ -1,0 +1,19 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#f8f9fa"/>
+  
+  <!-- Product Box Icon -->
+  <rect x="75" y="80" width="150" height="120" rx="8" fill="#e9ecef" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Product Image Area -->
+  <rect x="85" y="95" width="130" height="90" fill="#ffffff" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- Mountain/Icon Placeholder -->
+  <path d="M 120 140 L 130 150 L 140 145 L 145 140 L 155 145 L 165 150 L 170 140" 
+        stroke="#6c757d" stroke-width="2" fill="none"/>
+  
+  <!-- Text Placeholder -->
+  <text x="150" y="180" text-anchor="middle" fill="#6c757d" font-family="Arial" font-size="10">PRODUCT</text>
+  
+  <!-- Shadow Effect -->
+  <ellipse cx="150" cy="210" rx="40" ry="3" fill="#dee2e6" opacity="0.2"/>
+</svg>
