@@ -23,6 +23,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Auto-migrate on production deployment
+        if (app()->environment('production')) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+            } catch (\Exception $e) {
+                // Log error but don't break the app
+                \Log::error('Migration failed: ' . $e->getMessage());
+            }
+        }
+
         // Share cart data to all views
         View::composer('*', function ($view) {
             $cartCount = 0;
